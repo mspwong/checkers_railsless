@@ -2,7 +2,7 @@ require "rspec"
 
 describe "Game" do
 
-  describe "game start" do
+  describe "start" do
     it "has 24 pieces" do
       #assert_equal 24, Piece.all.size
       true.should == false
@@ -39,7 +39,7 @@ describe "Game" do
     end
 
     describe "moving to invalid square" do
-      it "should not get far and should not move piece" do
+      it "does not get far and does not move piece" do
         #x = @piece.x
         #y = @piece.y
         #assert_raise(ArgumentError) { @piece.move(@piece.x, 3.5) }
@@ -62,8 +62,8 @@ describe "Game" do
       end
     end
 
-  #  describe "moving to light colored square" do
-  #    it "should not validate and should not move piece" do
+    describe "moving to light colored square" do
+      it "does not validate and does not move piece" do
   #      x = @piece.x
   #      y = @piece.y
   #      assert_raise(ActiveRecord::RecordInvalid) { @piece.move(4, 4) }
@@ -74,15 +74,17 @@ describe "Game" do
   #      assert_equal 1, @piece.errors.size
   #      assert_equal "base", @piece.errors.first[0]
   #      assert_equal "must only move immediate forward and diagonal", @piece.errors.first[1]
-  #    end
-  #  end
+        true.should == false
+      end
+    end
   #
-  #  describe "moving to horizontally adjacent (side way) square" do
-  #    it "should not validate" do
+    describe "moving to horizontally adjacent (side way) square" do
+      it "does not validate" do
   #      assert_raise(ActiveRecord::RecordInvalid) { @piece.move(8, 3) }
   #      assert_equal 1, @piece.errors.size
-  #    end
-  #  end
+        true.should == false
+      end
+    end
   #
   #  context "moving to vertically adjacent (up or down) square" do
   #    should "not validate" do
