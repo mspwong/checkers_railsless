@@ -14,8 +14,8 @@ class Game
 
   def move(piece, new_position)
     raise ArgumentError unless ( new_position.size == 2  &&
-                                (new_position[:x].is_a? Integer)  && (VALID_COORDINATES.include? new_position[:x])  &&
-                                (new_position[:y].is_a? Integer)  && (VALID_COORDINATES.include? new_position[:y]) )
+                                (new_position.first.is_a? Integer)  && (VALID_COORDINATES.include? new_position.first)  &&
+                                (new_position.last.is_a? Integer)  && (VALID_COORDINATES.include? new_position.last) )
     raise RuntimeError if !immediate_forward_and_diagonal(piece, new_position)  ||  occupied(new_position)
   end
 
@@ -32,9 +32,9 @@ class Game
     x = p.first
     y = p.last
     if piece[:team] == :white
-      (new_position[:y] == y+1)  &&  ((new_position[:x] == x+1)  || (new_position[:x] == x-1))
+      (new_position.last == y+1)  &&  ((new_position.first == x+1)  || (new_position.first == x-1))
     elsif piece[:team] == :red
-      (new_position[:y] == y-1)  &&  ((new_position[:x] == x+1)  || (new_position[:x] == x-1))
+      (new_position.last == y-1)  &&  ((new_position.first == x+1)  || (new_position.first == x-1))
     else
       raise RuntimeError("unknown team:  #{piece[:team]}")
     end
@@ -43,7 +43,7 @@ class Game
   def occupied(new_position)
     occupied = false
     teams.each_value do |pieces|
-      occupied = pieces.values.include? [new_position[:x], new_position[:y]]
+      occupied = pieces.values.include? [new_position.first, new_position.last]
       break if occupied
     end
     occupied

@@ -50,34 +50,34 @@ describe "Game" do
 
     describe "to invalid square" do
       it "results in exception" do
-        lambda { @game.move(@piece, {:x=>3.5, :y=>@y}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>3.5, :y=>3.5}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>@x, :y=>-1}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>-1, :y=>@y}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>0, :y=>@y}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>@x, :y=>0}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>"does not matter", :y=>@y}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>@x, :y=>9}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>9, :y=>@y}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>9, :y=>9}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [3.5, @y]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [3.5, 3.5]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [@x, -1]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [-1, @y]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [0, @y]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [@x, 0]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, ["does not matter", @y]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [@x, 9]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [9, @y]) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, [9, 9]) }.should raise_error(ArgumentError)
       end
     end
 
     describe "to light colored square" do
       it "results in exception" do
-        lambda { @game.move(@piece, {:x=>4, :y=>4}) }.should raise_error(RuntimeError)
+        lambda { @game.move(@piece, [4, 4]) }.should raise_error(RuntimeError)
       end
     end
 
     describe "to horizontally adjacent (side way) square" do
       it "results in exception" do
-        lambda { @game.move(@piece, {:x=>8, :y=>3}) }.should raise_error(RuntimeError)
+        lambda { @game.move(@piece, [8, 3]) }.should raise_error(RuntimeError)
       end
     end
 
     describe "to vertically adjacent (up or down) square" do
       it "results in exception" do
-        lambda { @game.move(@piece, {:x=>7, :y=>4}) }.should raise_error(RuntimeError)
+        lambda { @game.move(@piece, [7, 4]) }.should raise_error(RuntimeError)
       end
     end
 
@@ -87,20 +87,20 @@ describe "Game" do
           piece = {:team => :red, :piece_num => 4}
           x = @game.teams[piece[:team]][piece[:piece_num]].first
           y = @game.teams[piece[:team]][piece[:piece_num]].last
-          lambda { @game.move(piece, {:x=>x-1, :y=>y+1}) }.should raise_error(RuntimeError)
+          lambda { @game.move(piece, [x-1, y+1]) }.should raise_error(RuntimeError)
         end
       end
     end
 
     describe "by a white piece" do
       it "results in exception" do
-        lambda { @game.move(@piece, {:x=>@x, :y=>@y-1}) }.should raise_error(RuntimeError)
+        lambda { @game.move(@piece, [@x, @y-1]) }.should raise_error(RuntimeError)
       end
     end
 
     describe "forward by more than 1 diagonal" do
       it "results in exception" do
-        lambda { @game.move(@piece, {:x=>5, :y=>5}) }.should raise_error(RuntimeError)
+        lambda { @game.move(@piece, [5, 5]) }.should raise_error(RuntimeError)
       end
     end
 
@@ -108,14 +108,14 @@ describe "Game" do
       describe "occupied by own team" do
         it "results in exception" do
           piece = {:team => :white, :piece_num => 7}
-          lambda { @game.move(piece, {:x=>@x, :y=>@y}) }.should raise_error(RuntimeError)
+          lambda { @game.move(piece, [@x, @y]) }.should raise_error(RuntimeError)
         end
       end
 
       describe "occupied by opponent" do
         it "results in exception" do
           piece = {:team => :red, :piece_num => 4}
-          lambda { @game.move(piece, {:x=>@x, :y=>@y}) }.should raise_error(RuntimeError)
+          lambda { @game.move(piece, [@x, @y]) }.should raise_error(RuntimeError)
         end
       end
     end
@@ -129,8 +129,8 @@ describe "Game" do
         piece = {:team => :red, :piece_num => 4}
         x = @game.teams[piece[:team]][piece[:piece_num]].first
         y = @game.teams[piece[:team]][piece[:piece_num]].last
-        lambda { @game.move(piece, {:x=>x-1, :y=>y-1}) }.should_not raise_error(Exception)
-        lambda { @game.move(piece, {:x=>x-1, :y=>y-1}) }.should_not raise_error(Exception)
+        lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error(Exception)
+        lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error(Exception)
       end
     end
   #
