@@ -39,7 +39,7 @@ describe "Game" do
   end
 
 
-  describe "Moving" do
+  describe "move" do
     before(:each) do
       @game = Game.new
       @piece = {:team => :white, :piece_num => 12}
@@ -87,11 +87,11 @@ describe "Game" do
           lambda { @game.move(piece, [x-1, y+1]) }.should raise_error(RuntimeError)
         end
       end
-    end
 
-    describe "by a white piece" do
-      it "results in exception" do
-        lambda { @game.move(@piece, [@x, @y-1]) }.should raise_error(RuntimeError)
+      describe "by a white piece" do
+        it "results in exception" do
+          lambda { @game.move(@piece, [@x, @y-1]) }.should raise_error(RuntimeError)
+        end
       end
     end
 
@@ -116,7 +116,6 @@ describe "Game" do
         end
       end
     end
-
   end
 
   describe "Move to valid square" do
