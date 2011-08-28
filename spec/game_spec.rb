@@ -10,42 +10,57 @@ describe "Checker game:  " do
       @x, @y = @game.position(@piece).first, @game.position(@piece).last
     end
 
-    describe "to invalid square" do
-      it "results in exception" do
-        lambda { @game.move(@piece, [3.5, @y]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, [3.5, 3.5]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, [@x, -1]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, [-1, @y]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, [0, @y]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, [@x, 0]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, ["does not matter", @y]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, [@x, 9]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, [9, @y]) }.should raise_error ArgumentError
-        lambda { @game.move(@piece, [9, 9]) }.should raise_error ArgumentError
+    describe "with invalid" do
+      describe "piece info" do
+        it "results in ArgumentError" do
+          valid_coordinates = [@x-1, @y+1]
+          lambda { @game.move(:white, valid_coordinates) }.should raise_error ArgumentError
+          lambda { @game.move({:team => :yellow, :piece_num => 12}, valid_coordinates) }.should raise_error ArgumentError
+          lambda { @game.move({:team => "white", :piece_num => 12}, valid_coordinates) }.should raise_error ArgumentError
+          lambda { @game.move({:team => :white, :piece_num => 13}, valid_coordinates) }.should raise_error ArgumentError
+          lambda { @game.move({:team => :white, :piece_num => 0}, valid_coordinates) }.should raise_error ArgumentError
+          lambda { @game.move({:team => :white, :piece_num => 3.5}, valid_coordinates) }.should raise_error ArgumentError
+          lambda { @game.move({:team => :white, :piece_num => -1}, valid_coordinates) }.should raise_error ArgumentError
+        end
+      end
+
+      describe "coordinates" do
+        it "results in ArgumentError" do
+          lambda { @game.move(@piece, [3.5, @y]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, [3.5, 3.5]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, [@x, -1]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, [-1, @y]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, [0, @y]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, [@x, 0]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, ["does not matter", @y]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, [@x, 9]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, [9, @y]) }.should raise_error ArgumentError
+          lambda { @game.move(@piece, [9, 9]) }.should raise_error ArgumentError
+        end
       end
     end
 
     describe "to light colored square" do
-      it "results in exception" do
+      it "results in ValidationError" do
         lambda { @game.move(@piece, [4, 4]) }.should raise_error ValidationError
       end
     end
 
     describe "to horizontally adjacent (side way) square" do
-      it "results in exception" do
+      it "results in ValidationError" do
         lambda { @game.move(@piece, [8, 3]) }.should raise_error ValidationError
       end
     end
 
     describe "to vertically adjacent (up or down) square" do
-      it "results in exception" do
+      it "results in ValidationError" do
         lambda { @game.move(@piece, [7, 4]) }.should raise_error ValidationError
       end
     end
 
     describe "backward" do
       describe "by a red piece" do
-        it "results in exception" do
+        it "results in ValidationError" do
           piece = {:team => :red, :piece_num => 4}
           x, y = @game.position(piece).first, @game.position(piece).last
           lambda { @game.move(piece, [x-1, y+1]) }.should raise_error ValidationError
@@ -53,28 +68,28 @@ describe "Checker game:  " do
       end
 
       describe "by a white piece" do
-        it "results in exception" do
+        it "results in ValidationError" do
           lambda { @game.move(@piece, [@x, @y-1]) }.should raise_error ValidationError
         end
       end
     end
 
     describe "forward by more than 1 diagonal" do
-      it "results in exception" do
+      it "results in ValidationError" do
         lambda { @game.move(@piece, [5, 5]) }.should raise_error ValidationError
       end
     end
 
     describe "to square" do
       describe "occupied by own team" do
-        it "results in exception" do
+        it "results in ValidationError" do
           piece = {:team => :white, :piece_num => 7}
           lambda { @game.move(piece, [@x, @y]) }.should raise_error ValidationError
         end
       end
 
       describe "occupied by opponent" do
-        it "results in exception" do
+        it "results in ValidationError" do
           piece = {:team => :red, :piece_num => 4}
           lambda { @game.move(piece, [@x, @y]) }.should raise_error ValidationError
         end
