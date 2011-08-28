@@ -126,12 +126,15 @@ describe "Game" do
     describe "by a red piece" do
       it "validate and move" do
         piece = {:team => :red, :piece_num => 4}
-        x, y = @game.position(piece).first, @game.position(piece).last
+        position = @game.position(piece)
+        x, y = position.first, position.last
         #lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error
-        #x, y = @game.position(piece).first, @game.position(piece).last
+        #position = @game.position(piece)
+        #x, y = position.first, position.last
         #lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error
         @game.move(piece, [x-1, y-1])
-        x, y = @game.position(piece).first, @game.position(piece).last
+        position = @game.position(piece)
+        x, y = position.first, position.last
         @game.move(piece, [x-1, y-1])
         @game.position(piece).should eq [6, 4]
       end
@@ -140,12 +143,15 @@ describe "Game" do
     describe "by white piece" do
       it "validate and move" do
         piece = {:team => :white, :piece_num => 12}
-        x, y = @game.position(piece).first, @game.position(piece).last
+        position = @game.position(piece)
+        x, y = position.first, position.last
         #lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error
-        #x, y = @game.position(piece).first, @game.position(piece).last
+        #position = @game.position(piece)
+        #x, y = position.first, position.last
         #lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error
         @game.move(piece, [x-1, y+1])
-        x, y = @game.position(piece).first, @game.position(piece).last
+        position = @game.position(piece)
+        x, y = position.first, position.last
         @game.move(piece, [x-1, y+1])
         @game.position(piece).should eq [5, 5]
       end
