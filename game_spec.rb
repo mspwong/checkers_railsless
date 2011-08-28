@@ -157,27 +157,24 @@ describe "Game" do
       end
     end
   end
-  #
-  #
-  #context "play sequence" do
-  #  should "allow or block appropriate moves" do
-  #    piece = pieces(:red_8)
-  #    x = piece.x
-  #    y = piece.y
-  #    assert_raise(ActiveRecord::RecordInvalid) { piece.move(8, 6) }
-  #    piece.reload
-  #    assert_equal x, piece.x
-  #    assert_equal y, piece.y
-  #
-  #    piece = pieces(:red_4).reload
-  #    y = piece.y
-  #    assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(7, 5) }
-  #    assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(8, 4) }
-  #    moved_piece = piece.reload
-  #    assert_equal 8, moved_piece.x
-  #    assert_equal 4, moved_piece.y
-  #    assert_not_equal y, moved_piece.y
-  #    assert_raise(ActiveRecord::RecordInvalid) {piece.move(7, 5)}
+
+
+  describe "Play game" do
+    it "allow or block appropriate moves" do
+      @game = Game.new
+      piece = {:team => :red, :piece_num => 8}
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      lambda { @game.move(piece, [x, y]) }.should raise_error
+
+      piece = {:team => :red, :piece_num => 4}
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      @game.move(piece, [x-1, y-1])
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      @game.move(piece, [x+1, y-1])
+      @game.position(piece).should eq [8, 4]
   #
   #    assert_raise(ActiveRecord::RecordInvalid) { pieces(:white_12).reload.move(8, 4) }
   #
@@ -217,6 +214,7 @@ describe "Game" do
   #    assert_equal y, piece.y
   #
   #    #   keep playing
-  #  end
+    end
+  end
 
 end
