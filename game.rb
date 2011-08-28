@@ -45,12 +45,9 @@ class Game
   end
 
   def occupied(new_position)
-    occupied = false
-    @teams.each_value do |pieces|
-      occupied = pieces.values.include? [new_position.first, new_position.last]
-      break if occupied
+    @teams.values.any? do |pieces|
+      pieces.values.include? new_position
     end
-    occupied
   end
 
 end
