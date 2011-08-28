@@ -17,7 +17,8 @@ class Game
                                 (new_position.first.is_a? Integer)  && (VALID_COORDINATES.include? new_position.first)  &&
                                 (new_position.last.is_a? Integer)  && (VALID_COORDINATES.include? new_position.last) )
 
-    raise RuntimeError if (!immediate_forward_and_diagonal(piece, new_position)  ||  occupied(new_position))
+    validate_immediate_forward_diagonal! piece, new_position
+    validate_not_occupied! new_position
 
     @teams[piece[:team]][piece[:piece_num]] = new_position
   end
@@ -30,23 +31,28 @@ class Game
 
   VALID_COORDINATES = (1..8).to_a
 
-  def immediate_forward_and_diagonal(piece, new_position)
+  def validate_immediate_forward_diagonal!(piece, new_position)
     p = position(piece)
     current_x = p.first
     current_y = p.last
     if piece[:team] == :white
-      (new_position.last == current_y+1)  &&  ((new_position.first == current_x+1)  || (new_position.first == current_x-1))
+      raise ValidationError.new("must only move to a position immediately forward and diagonal") unless (new_position.last == current_y+1)  &&  ((new_position.first == current_x+1)  || (new_position.first == current_x-1))
     elsif piece[:team] == :red
-      (new_position.last == current_y-1)  &&  ((new_position.first == current_x+1)  || (new_position.first == current_x-1))
+      raise ValidationError.new("must only move to a position immediately forward and diagonal") unless (new_position.last == current_y-1)  &&  ((new_position.first == current_x+1)  || (new_position.first == current_x-1))
     else
-      raise RuntimeError("unknown team:  #{piece[:team]}")
+      raise ArgumentError("unknown team:  #{piece[:team]}")
     end
   end
 
-  def occupied(new_position)
-    @teams.values.any? do |pieces|
+  def validate_not_occupied!(new_position)
+    raise ValidationError.new("must not move to a position that is already occupied") if @teams.values.any? do |pieces|
       pieces.values.include? new_position
     end
   end
 
+end
+
+
+
+class ValidationError < StandardError
 end
