@@ -8,6 +8,10 @@ describe "Game" do
       @game = Game.new
     end
 
+    it "has 2 teams" do
+      @game.teams.size.should eq 2
+    end
+
     it "has 24 pieces" do
       pieces = []
       @game.teams.flatten.each do |team|
@@ -19,32 +23,18 @@ describe "Game" do
     end
 
     ["red", "white"].each do |team_name|
-      it "has 12 pieces on #{team_name} team" do
-        @game.teams.size.should == 2
-        @game.teams["red"].size.should == 12
-        @game.teams["white"].size.should == 12
+      it "#{team_name} team has 12 pieces" do
+        @game.teams[team_name].size.should == 12
       end
     end
 
-    it "has all 24 pieces in the correct start positions" do
-      @game.teams["white"].flatten.all? do |piece|
-        if piece.class == Hash
-          [[1,1],[3,1],[5,1],[7,1],[2,2],[4,2],[6,2],[8,2],[1,3],[3,3],[5,3],[7,3]].any? do |coordinates|
-            piece == {:x => coordinates.first, :y => coordinates.last}
-          end
-        else
-          true
-        end
-      end.should eq true
-      @game.teams["red"].flatten.all? do |piece|
-        if piece.class == Hash
-          [[2,6],[4,6],[6,6],[8,6],[1,7],[3,7],[5,7],[7,7],[2,8],[4,8],[6,8],[8,8]].any? do |coordinates|
-            piece == {:x => coordinates.first, :y => coordinates.last}
-          end
-        else
-          true
-        end
-      end.should eq true
+    {"white" => [[1, 1], [3, 1], [5, 1], [7, 1], [2, 2], [4, 2], [6, 2], [8, 2], [1, 3], [3, 3], [5, 3], [7, 3]],
+     "red" => [[2, 6], [4, 6], [6, 6], [8, 6], [1, 7], [3, 7], [5, 7], [7, 7], [2, 8], [4, 8], [6, 8], [8, 8]]}.each do |key, value|
+      it "#{key} team has all 12 pieces in the correct start positions" do
+        value.all? do |position|
+          @game.teams[key].has_value? position
+        end.should eq true
+      end
     end
   end
 
