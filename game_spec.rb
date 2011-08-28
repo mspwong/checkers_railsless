@@ -36,14 +36,15 @@ describe "Game" do
           true
         end
       end.should eq true
-
-      #[[1,1],[3,1],[5,1],[7,1],[2,2],[4,2],[6,2],[8,2],[1,3],[3,3],[5,3],[7,3]].each do |coordinates|
-      #  assert pieces.any? { |p| p.team_id == teams(:white).id  &&  p.x == coordinates[0]  &&  p.y == coordinates[1] }
-      #end
-      #
-      #[[2,6],[4,6],[6,6],[8,6],[1,7],[3,7],[5,7],[7,7],[2,8],[4,8],[6,8],[8,8]].each do |coordinates|
-        #assert pieces.any? { |p| p.team_id == teams(:red).id  &&  p.x == coordinates[0]  &&  p.y == coordinates[1] }
-      #end
+      @game.teams["red"].flatten.all? do |piece|
+        if piece.class == Hash
+          [[2,6],[4,6],[6,6],[8,6],[1,7],[3,7],[5,7],[7,7],[2,8],[4,8],[6,8],[8,8]].any? do |coordinates|
+            piece == {:x => coordinates.first, :y => coordinates.last}
+          end
+        else
+          true
+        end
+      end.should eq true
     end
   end
 
