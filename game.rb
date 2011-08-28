@@ -29,7 +29,7 @@ class Game
 
   private
 
-  VALID_COORDINATES = (1..8)
+  VALID_COORDINATES = (1..8).to_a
 
   def immediate_forward_and_diagonal(piece, new_position)
     p = position(piece)
