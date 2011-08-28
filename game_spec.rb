@@ -22,14 +22,14 @@ describe "Game" do
       pieces.size.should == 24
     end
 
-    ["red", "white"].each do |team_name|
+    [:red, :white].each do |team_name|
       it "#{team_name} team has 12 pieces" do
         @game.teams[team_name].size.should == 12
       end
     end
 
-    {"white" => [[1, 1], [3, 1], [5, 1], [7, 1], [2, 2], [4, 2], [6, 2], [8, 2], [1, 3], [3, 3], [5, 3], [7, 3]],
-     "red" => [[2, 6], [4, 6], [6, 6], [8, 6], [1, 7], [3, 7], [5, 7], [7, 7], [2, 8], [4, 8], [6, 8], [8, 8]]}.each do |key, value|
+    {:white => [[1, 1], [3, 1], [5, 1], [7, 1], [2, 2], [4, 2], [6, 2], [8, 2], [1, 3], [3, 3], [5, 3], [7, 3]],
+     :red => [[2, 6], [4, 6], [6, 6], [8, 6], [1, 7], [3, 7], [5, 7], [7, 7], [2, 8], [4, 8], [6, 8], [8, 8]]}.each do |key, value|
       it "#{key} team has all 12 pieces in the correct start positions" do
         value.all? do |position|
           @game.teams[key].has_value? position
@@ -39,20 +39,22 @@ describe "Game" do
   end
 
 
-  #describe "" do
-  #  before(:each) do
-      #@piece = pieces(:white_12)
-    #end
+  describe "Moving" do
+    before(:each) do
+      @game = Game.new
+      @piece = {:team => :white, :piece_num => 12}
+    end
 
-    #describe "moving to invalid square" do
-    #  it "does not get far and does not move piece" do
-        #x = @piece.x
-        #y = @piece.y
-        #assert_raise(ArgumentError) { @piece.move(@piece.x, 3.5) }
-        #@piece.reload
-        #assert_equal x, @piece.x
-        #assert_equal y, @piece.y
-        #
+    describe "to invalid square" do
+      it "does not get far and does not move piece" do
+        piece = @game.teams[@piece[:team]][@piece[:piece_num]]
+        x = piece.first
+        y = piece.last
+        lambda { @game.move(@piece, {:x=>3.5, :y=>y}) }.should raise_error(ArgumentError)
+        #new_positions = @game.position(@piece)
+        #new_positions[:x].should eq x
+        #new_positions[:y].should eq y
+
         #assert_raise(ArgumentError) { @piece.move(3.5, @piece.y) }
         #assert_raise(ArgumentError) { @piece.move(3.5, 3.5) }
         #assert_raise(ArgumentError) { @piece.move(@piece.x, -1) }
@@ -64,9 +66,8 @@ describe "Game" do
         #assert_raise(ArgumentError) { @piece.move(9, @piece.y) }
         #assert_raise(ArgumentError) { @piece.move(0, @piece.y) }
         #assert_raise(ArgumentError) { @piece.move(9, 9) }
-        #true.should == false
-      #end
-    #end
+      end
+    end
 
     #describe "moving to light colored square" do
     #  it "does not validate and does not move piece" do
@@ -247,6 +248,6 @@ describe "Game" do
   #
   #    #   keep playing
   #  end
-  #end
+  end
 
 end
