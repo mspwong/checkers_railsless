@@ -1,0 +1,11 @@
+This application validates a proposed move during a checker game.  It handles only regular moves with the caveat that a piece may not moved into a square that is occupied by another piece of either color.
+
+The x and y coordinates are taken from the checkers board images shown here:  http://www.jimloy.com/checkers/rules2.htm
+[1,1] denotes the bottom left square
+[8,1] denotes the bottom right square
+[8,1] denotes the top left square
+[8,8] denotes the top right square
+
+The starting board has the following configuration:
+white team has corner pieces in [1,1], [7,1], [1,3], [7,3]
+red team has corner pieces in [2,6], [8,6], [2,8], [8,8]
