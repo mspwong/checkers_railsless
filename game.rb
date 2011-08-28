@@ -33,12 +33,12 @@ class Game
 
   def immediate_forward_and_diagonal(piece, new_position)
     p = position(piece)
-    x = p.first
-    y = p.last
+    current_x = p.first
+    current_y = p.last
     if piece[:team] == :white
-      (new_position.last == y+1)  &&  ((new_position.first == x+1)  || (new_position.first == x-1))
+      (new_position.last == current_y+1)  &&  ((new_position.first == current_x+1)  || (new_position.first == current_x-1))
     elsif piece[:team] == :red
-      (new_position.last == y-1)  &&  ((new_position.first == x+1)  || (new_position.first == x-1))
+      (new_position.last == current_y-1)  &&  ((new_position.first == current_x+1)  || (new_position.first == current_x-1))
     else
       raise RuntimeError("unknown team:  #{piece[:team]}")
     end
