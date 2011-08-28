@@ -175,45 +175,45 @@ describe "Game" do
       x, y = position.first, position.last
       @game.move(piece, [x+1, y-1])
       @game.position(piece).should eq [8, 4]
-  #
-  #    assert_raise(ActiveRecord::RecordInvalid) { pieces(:white_12).reload.move(8, 4) }
-  #
-  #    piece = pieces(:red_8).reload
-  #    y = piece.y
-  #    assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(8, 6) }
-  #    moved_piece = piece.reload
-  #    assert_equal 8, moved_piece.x
-  #    assert_equal 6, moved_piece.y
-  #    assert_not_equal y, moved_piece.y
-  #
-  #    piece = pieces(:white_12).reload
-  #    y = piece.y
-  #    assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(6, 4) }
-  #    assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(5, 5) }
-  #    piece.reload
-  #    assert_equal 5, piece.x
-  #    assert_equal 5, piece.y
-  #    assert_not_equal y, piece.y
-  #
-  #    piece = pieces(:red_2).reload
-  #    assert_raise(ActiveRecord::RecordInvalid, Exception) { piece.move(5, 5)}
-  #
-  #    piece = pieces(:white_8).reload
-  #    y = piece.y
-  #    assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(7, 3)}
-  #    assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(6, 4)}
-  #    piece.reload
-  #    assert_equal 6, piece.x
-  #    assert_equal 4, piece.y
-  #    assert_not_equal y, piece.y
-  #    x = piece.x
-  #    y = piece.y
-  #    assert_raise(ActiveRecord::RecordInvalid) { piece.move(5,5) }
-  #    piece.reload
-  #    assert_equal x, piece.x
-  #    assert_equal y, piece.y
-  #
-  #    #   keep playing
+
+      piece = {:team => :white, :piece_num => 12}
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      lambda { @game.move(piece, [x+1, y+1]) }.should raise_error
+
+      piece = {:team => :red, :piece_num => 8}
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      @game.move(piece, [x+1, y-1])
+      @game.position(piece).should eq [8, 6]
+
+      piece = {:team => :white, :piece_num => 12}
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      @game.move(piece, [x-1, y+1])
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      @game.move(piece, [x-1, y+1])
+      @game.position(piece).should eq [5, 5]
+
+      piece = {:team => :red, :piece_num => 2}
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      lambda { @game.move(piece, [x+1, y-1]) }.should raise_error
+
+      piece = {:team => :white, :piece_num => 8}
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      @game.move(piece, [x-1, y+1])
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      @game.move(piece, [x-1, y+1])
+      position = @game.position(piece)
+      x, y = position.first, position.last
+      [x, y].should eq [6, 4]
+      lambda { @game.move(piece, [x-1, y+1]) }.should raise_error
+
+      #   keep playing
     end
   end
 
