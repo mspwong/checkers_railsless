@@ -1,12 +1,13 @@
 require "rspec"
 require File.dirname("__FILE__") + "/game"
 
-describe "Game" do
+describe "Game:  " do
+
+  before(:each) do
+    @game = Game.new
+  end
 
   describe "start" do
-    before(:all) do
-      @game = Game.new
-    end
 
     it "has 2 teams" do
       @game.teams.size.should eq 2
@@ -41,7 +42,6 @@ describe "Game" do
 
   describe "move" do
     before(:each) do
-      @game = Game.new
       @piece = {:team => :white, :piece_num => 12}
       @x, @y = @game.position(@piece).first, @game.position(@piece).last
     end
@@ -118,10 +118,8 @@ describe "Game" do
     end
   end
 
-  describe "Move to valid square" do
-    before(:each) do
-      @game = Game.new
-    end
+
+  describe "move to valid square" do
     describe "by a red piece" do
       it "validate and move" do
         piece = {:team => :red, :piece_num => 4}
@@ -158,9 +156,8 @@ describe "Game" do
   end
 
 
-  describe "Play game" do
+  describe "play game" do
     it "allow or block appropriate moves" do
-      @game = Game.new
       piece = {:team => :red, :piece_num => 8}
       position = @game.position(piece)
       x, y = position.first, position.last
