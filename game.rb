@@ -22,7 +22,6 @@ class Game
     @teams[piece[:team]][piece[:piece_num]] = new_position
   end
 
-  # TODO:  see if there is a way to hide this but still accessible by tests
   def position(piece)
     @teams[piece[:team]][piece[:piece_num]]
   end

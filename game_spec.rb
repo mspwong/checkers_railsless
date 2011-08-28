@@ -129,10 +129,6 @@ describe "Game:  " do
         piece = {:team => :red, :piece_num => 4}
         position = @game.position(piece)
         x, y = position.first, position.last
-        #lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error
-        #position = @game.position(piece)
-        #x, y = position.first, position.last
-        #lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error
         @game.move(piece, [x-1, y-1])
         position = @game.position(piece)
         x, y = position.first, position.last
@@ -146,10 +142,6 @@ describe "Game:  " do
         piece = {:team => :white, :piece_num => 12}
         position = @game.position(piece)
         x, y = position.first, position.last
-        #lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error
-        #position = @game.position(piece)
-        #x, y = position.first, position.last
-        #lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error
         @game.move(piece, [x-1, y+1])
         position = @game.position(piece)
         x, y = position.first, position.last
