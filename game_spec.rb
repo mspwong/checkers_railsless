@@ -43,8 +43,7 @@ describe "Game" do
     before(:each) do
       @game = Game.new
       @piece = {:team => :white, :piece_num => 12}
-      @x = @game.position(@piece).first
-      @y = @game.position(@piece).last
+      @x, @y = @game.position(@piece).first, @game.position(@piece).last
     end
 
     describe "to invalid square" do
@@ -84,8 +83,7 @@ describe "Game" do
       describe "by a red piece" do
         it "results in exception" do
           piece = {:team => :red, :piece_num => 4}
-          x = @game.position(piece).first
-          y = @game.position(piece).last
+          x, y = @game.position(piece).first, @game.position(piece).last
           lambda { @game.move(piece, [x-1, y+1]) }.should raise_error(RuntimeError)
         end
       end
@@ -128,20 +126,28 @@ describe "Game" do
     describe "by a red piece" do
       it "validate and move" do
         piece = {:team => :red, :piece_num => 4}
-        x = @game.position(piece).first
-        y = @game.position(piece).last
-        lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error(Exception)
-        lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error(Exception)
+        x, y = @game.position(piece).first, @game.position(piece).last
+        #lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error
+        #x, y = @game.position(piece).first, @game.position(piece).last
+        #lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error
+        @game.move(piece, [x-1, y-1])
+        x, y = @game.position(piece).first, @game.position(piece).last
+        @game.move(piece, [x-1, y-1])
+        @game.position(piece).should eq [6, 4]
       end
     end
 
     describe "by white piece" do
       it "validate and move" do
         piece = {:team => :white, :piece_num => 12}
-        x = @game.position(piece).first
-        y = @game.position(piece).last
-        lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error(Exception)
-        lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error(Exception)
+        x, y = @game.position(piece).first, @game.position(piece).last
+        #lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error
+        #x, y = @game.position(piece).first, @game.position(piece).last
+        #lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error
+        @game.move(piece, [x-1, y+1])
+        x, y = @game.position(piece).first, @game.position(piece).last
+        @game.move(piece, [x-1, y+1])
+        @game.position(piece).should eq [5, 5]
       end
     end
   end

@@ -16,12 +16,15 @@ class Game
     raise ArgumentError unless ( new_position.size == 2  &&
                                 (new_position.first.is_a? Integer)  && (VALID_COORDINATES.include? new_position.first)  &&
                                 (new_position.last.is_a? Integer)  && (VALID_COORDINATES.include? new_position.last) )
-    raise RuntimeError if !immediate_forward_and_diagonal(piece, new_position)  ||  occupied(new_position)
+
+    raise RuntimeError if (!immediate_forward_and_diagonal(piece, new_position)  ||  occupied(new_position))
+
+    @teams[piece[:team]][piece[:piece_num]] = new_position
   end
 
   # TODO:  see if there is a way to hide this but still accessible by tests
   def position(piece)
-    teams[piece[:team]][piece[:piece_num]]
+    @teams[piece[:team]][piece[:piece_num]]
   end
 
   private
@@ -43,7 +46,7 @@ class Game
 
   def occupied(new_position)
     occupied = false
-    teams.each_value do |pieces|
+    @teams.each_value do |pieces|
       occupied = pieces.values.include? [new_position.first, new_position.last]
       break if occupied
     end
