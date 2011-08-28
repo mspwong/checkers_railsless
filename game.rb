@@ -13,7 +13,10 @@ class Game
   end
 
   def move(piece, new_position)
-    raise ArgumentError unless ( new_position.size == 2  &&
+    raise ArgumentError unless ((piece.is_a? Hash)  &&
+                                (piece[:team].is_a? Symbol)  && ([:white, :red].include? piece[:team])  &&
+                                (piece[:piece_num].is_a? Integer)  &&  (VALID_PIECE_NUMS.include? piece[:piece_num])  &&
+                                (new_position.is_a? Array)  &&  (new_position.size == 2)  &&
                                 (new_position.first.is_a? Integer)  && (VALID_COORDINATES.include? new_position.first)  &&
                                 (new_position.last.is_a? Integer)  && (VALID_COORDINATES.include? new_position.last) )
 
@@ -23,12 +26,14 @@ class Game
     @teams[piece[:team]][piece[:piece_num]] = new_position
   end
 
+  # exposing this for testing
   def position(piece)
     @teams[piece[:team]][piece[:piece_num]]
   end
 
   private
 
+  VALID_PIECE_NUMS = (1..12).to_a
   VALID_COORDINATES = (1..8).to_a
 
   def validate_immediate_forward_diagonal!(piece, new_position)
@@ -37,10 +42,8 @@ class Game
     current_y = p.last
     if piece[:team] == :white
       raise ValidationError.new("must only move to a position immediately forward and diagonal") unless (new_position.last == current_y+1)  &&  ((new_position.first == current_x+1)  || (new_position.first == current_x-1))
-    elsif piece[:team] == :red
+    else piece[:team] == :red
       raise ValidationError.new("must only move to a position immediately forward and diagonal") unless (new_position.last == current_y-1)  &&  ((new_position.first == current_x+1)  || (new_position.first == current_x-1))
-    else
-      raise ArgumentError("unknown team:  #{piece[:team]}")
     end
   end
 
