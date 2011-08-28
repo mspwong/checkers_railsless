@@ -19,13 +19,14 @@ class Game
     raise RuntimeError if !immediate_forward_and_diagonal(piece, new_position)  ||  occupied(new_position)
   end
 
-  private
-
-  VALID_COORDINATES = (1..8)
-
+  # TODO:  see if there is a way to hide this but still accessible by tests
   def position(piece)
     teams[piece[:team]][piece[:piece_num]]
   end
+
+  private
+
+  VALID_COORDINATES = (1..8)
 
   def immediate_forward_and_diagonal(piece, new_position)
     p = position(piece)

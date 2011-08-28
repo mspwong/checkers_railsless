@@ -43,9 +43,8 @@ describe "Game" do
     before(:each) do
       @game = Game.new
       @piece = {:team => :white, :piece_num => 12}
-      piece = @game.teams[@piece[:team]][@piece[:piece_num]]
-      @x = piece.first
-      @y = piece.last
+      @x = @game.position(@piece).first
+      @y = @game.position(@piece).last
     end
 
     describe "to invalid square" do
@@ -85,8 +84,8 @@ describe "Game" do
       describe "by a red piece" do
         it "results in exception" do
           piece = {:team => :red, :piece_num => 4}
-          x = @game.teams[piece[:team]][piece[:piece_num]].first
-          y = @game.teams[piece[:team]][piece[:piece_num]].last
+          x = @game.position(piece).first
+          y = @game.position(piece).last
           lambda { @game.move(piece, [x-1, y+1]) }.should raise_error(RuntimeError)
         end
       end
@@ -123,30 +122,29 @@ describe "Game" do
   end
 
   describe "Move to valid square" do
+    before(:each) do
+      @game = Game.new
+    end
     describe "by a red piece" do
       it "validate and move" do
-        @game = Game.new
         piece = {:team => :red, :piece_num => 4}
-        x = @game.teams[piece[:team]][piece[:piece_num]].first
-        y = @game.teams[piece[:team]][piece[:piece_num]].last
+        x = @game.position(piece).first
+        y = @game.position(piece).last
         lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error(Exception)
         lambda { @game.move(piece, [x-1, y-1]) }.should_not raise_error(Exception)
       end
     end
-  #
-  #  context "by white piece" do
-  #    should "validate and move" do
-  #      piece = pieces(:white_12)
-  #      y = piece.y
-  #      assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(6, 4) }
-  #      assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(5, 5) }
-  #      piece.reload
-  #      assert_equal 5, piece.x
-  #      assert_equal 5, piece.y
-  #      assert_not_equal y, piece.y
-  #    end
-  #  end
-  #end
+
+    describe "by white piece" do
+      it "validate and move" do
+        piece = {:team => :white, :piece_num => 12}
+        x = @game.position(piece).first
+        y = @game.position(piece).last
+        lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error(Exception)
+        lambda { @game.move(piece, [x-1, y+1]) }.should_not raise_error(Exception)
+      end
+    end
+  end
   #
   #
   #context "play sequence" do
@@ -208,6 +206,5 @@ describe "Game" do
   #
   #    #   keep playing
   #  end
-  end
 
 end
