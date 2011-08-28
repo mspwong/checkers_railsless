@@ -121,7 +121,7 @@ describe "Checker game:  " do
       @game = Game.new
     end
 
-    it "allow or block appropriate moves" do
+    it "allows or blocks appropriate moves" do
       piece = {:team => :red, :piece_num => 8}
       position = @game.position(piece)
       x, y = position.first, position.last
