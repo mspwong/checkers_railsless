@@ -68,55 +68,41 @@ describe "Game" do
         lambda { @game.move(@piece, {:x=>4, :y=>4}) }.should raise_error(RuntimeError)
       end
     end
-  #
-  #  describe "moving to horizontally adjacent (side way) square" do
-  #    it "does not validate" do
-  #      assert_raise(ActiveRecord::RecordInvalid) { @piece.move(8, 3) }
-  #      assert_equal 1, @piece.errors.size
-  #      true.should == false
-  #    end
-  #  end
-  #
-  #  context "moving to vertically adjacent (up or down) square" do
-  #    should "not validate" do
-  #      assert_raise(ActiveRecord::RecordInvalid) { @piece.move(7, 4) }
-  #      assert_equal 1, @piece.errors.size
-  #      assert_equal "base", @piece.errors.first[0]
-  #      assert_equal "must only move immediate forward and diagonal", @piece.errors.first[1]
-  #    end
-  #  end
-  #
-  #  context "moving backward" do
-  #    context "by a red piece" do
-  #      should "not validate" do
-  #        piece = pieces(:red_4)
-  #        assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(7, 5) }
-  #        assert_raise(ActiveRecord::RecordInvalid) { piece.move(8, 6) }
-  #        assert_equal 1, piece.errors.size
-  #        assert_equal "base", piece.errors.first[0]
-  #        assert_equal "must only move immediate forward and diagonal", piece.errors.first[1]
-  #      end
-  #    end
-  #
-  #    context "by a white piece" do
-  #      should "not validate" do
-  #        assert_nothing_raised(ActiveRecord::RecordInvalid) { @piece.move(8, 4) }
-  #        assert_raise(ActiveRecord::RecordInvalid) { @piece.move(7, 3) }
-  #        assert_equal 1, @piece.errors.size
-  #        assert_equal "base", @piece.errors.first[0]
-  #        assert_equal "must only move immediate forward and diagonal", @piece.errors.first[1]
-  #      end
-  #    end
-  #  end
-  #
-  #  context "moving forward by more than 1 diagonal" do
-  #    should "not validate" do
-  #      assert_raise(ActiveRecord::RecordInvalid) { @piece.move(5, 5) }
-  #      assert_equal 1, @piece.errors.size
-  #      assert_equal "base", @piece.errors.first[0]
-  #      assert_equal "must only move immediate forward and diagonal", @piece.errors.first[1]
-  #    end
-  #  end
+
+    describe "to horizontally adjacent (side way) square" do
+      it "results in exception" do
+        lambda { @game.move(@piece, {:x=>8, :y=>3}) }.should raise_error(RuntimeError)
+      end
+    end
+
+    describe "to vertically adjacent (up or down) square" do
+      it "results in exception" do
+        lambda { @game.move(@piece, {:x=>7, :y=>4}) }.should raise_error(RuntimeError)
+      end
+    end
+
+    describe "backward" do
+      describe "by a red piece" do
+        it "results in exception" do
+          piece = {:team => :red, :piece_num => 4}
+          x = @game.teams[piece[:team]][piece[:piece_num]].first
+          y = @game.teams[piece[:team]][piece[:piece_num]].last
+          lambda { @game.move(piece, {:x=>x-1, :y=>y+1}) }.should raise_error(RuntimeError)
+        end
+      end
+    end
+
+    describe "by a white piece" do
+      it "results in exception" do
+        lambda { @game.move(@piece, {:x=>@x, :y=>@y-1}) }.should raise_error(RuntimeError)
+      end
+    end
+
+    describe "forward by more than 1 diagonal" do
+      it "results in exception" do
+        lambda { @game.move(@piece, {:x=>5, :y=>5}) }.should raise_error(RuntimeError)
+      end
+    end
   #
   #  context "moving to square" do
   #    context "occupied by own team" do
