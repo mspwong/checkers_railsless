@@ -103,46 +103,36 @@ describe "Game" do
         lambda { @game.move(@piece, {:x=>5, :y=>5}) }.should raise_error(RuntimeError)
       end
     end
-  #
-  #  context "moving to square" do
-  #    context "occupied by own team" do
-  #      should "not validate" do
-  #        white_7 = pieces(:white_7)
-  #        assert_raise(ActiveRecord::RecordInvalid) { white_7.move(@piece.x, @piece.y) }
-  #        assert_equal 1, white_7.errors.size
-  #        assert_equal "base", white_7.errors.first[0]
-  #        assert_equal "must not move to an occupied square", white_7.errors.first[1]
-  #      end
-  #    end
-  #
-  #    context "occupied by opponent" do
-  #      should "not validate" do
-  #        red_4 = pieces(:red_4)
-  #        assert_nothing_raised(ActiveRecord::RecordInvalid) { @piece.move(6, 4) }
-  #        assert_nothing_raised(ActiveRecord::RecordInvalid) { @piece.move(7, 5) }
-  #        assert_raise(ActiveRecord::RecordInvalid) { @piece.move(red_4.x, red_4.y) }
-  #        assert_equal 1, @piece.errors.size
-  #        assert_equal "base", @piece.errors.first[0]
-  #        assert_equal "must not move to an occupied square", @piece.errors.first[1]
-  #      end
-  #    end
-  #  end
-  #end
-  #
-  #
-  #context "moving to valid square" do
-  #  context "by a red piece" do
-  #    should "validate and move" do
-  #      piece = pieces(:red_4)
-  #      y = piece.y
-  #      assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(7, 5) }
-  #      assert_nothing_raised(ActiveRecord::RecordInvalid) { piece.move(6, 4) }
-  #      piece.reload
-  #      assert_equal 6, piece.x
-  #      assert_equal 4, piece.y
-  #      assert_not_equal y, piece.y
-  #    end
-  #  end
+
+    describe "to square" do
+      describe "occupied by own team" do
+        it "results in exception" do
+          piece = {:team => :white, :piece_num => 7}
+          lambda { @game.move(piece, {:x=>@x, :y=>@y}) }.should raise_error(RuntimeError)
+        end
+      end
+
+      describe "occupied by opponent" do
+        it "results in exception" do
+          piece = {:team => :red, :piece_num => 4}
+          lambda { @game.move(piece, {:x=>@x, :y=>@y}) }.should raise_error(RuntimeError)
+        end
+      end
+    end
+
+  end
+
+  describe "Move to valid square" do
+    describe "by a red piece" do
+      it "validate and move" do
+        @game = Game.new
+        piece = {:team => :red, :piece_num => 4}
+        x = @game.teams[piece[:team]][piece[:piece_num]].first
+        y = @game.teams[piece[:team]][piece[:piece_num]].last
+        lambda { @game.move(piece, {:x=>x-1, :y=>y-1}) }.should_not raise_error(Exception)
+        lambda { @game.move(piece, {:x=>x-1, :y=>y-1}) }.should_not raise_error(Exception)
+      end
+    end
   #
   #  context "by white piece" do
   #    should "validate and move" do

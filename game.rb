@@ -16,7 +16,7 @@ class Game
     raise ArgumentError unless ( new_position.size == 2  &&
                                 (new_position[:x].is_a? Integer)  && (VALID_COORDINATES.include? new_position[:x])  &&
                                 (new_position[:y].is_a? Integer)  && (VALID_COORDINATES.include? new_position[:y]) )
-    raise RuntimeError unless immediate_forward_and_diagonal(piece, new_position)
+    raise RuntimeError if !immediate_forward_and_diagonal(piece, new_position)  ||  occupied(new_position)
   end
 
   private
@@ -38,7 +38,15 @@ class Game
     else
       raise RuntimeError("unknown team:  #{piece[:team]}")
     end
+  end
 
+  def occupied(new_position)
+    occupied = false
+    teams.each_value do |pieces|
+      occupied = pieces.values.include? [new_position[:x], new_position[:y]]
+      break if occupied
+    end
+    occupied
   end
 
 end
