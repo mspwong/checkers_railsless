@@ -3,42 +3,6 @@ require File.dirname("__FILE__") + "/game"
 
 describe "Game:  " do
 
-  describe "start" do
-    before(:all) do
-      @game = Game.new
-    end
-
-    it "has 2 teams" do
-      @game.teams.size.should eq 2
-    end
-
-    it "has 24 pieces" do
-      pieces = []
-      @game.teams.flatten.each do |team|
-        team.to_a.each do |piece|
-          pieces.push piece
-        end if team.class == Hash
-      end
-      pieces.size.should == 24
-    end
-
-    [:red, :white].each do |team_name|
-      it "#{team_name} team has 12 pieces" do
-        @game.teams[team_name].size.should == 12
-      end
-    end
-
-    {:white => [[1, 1], [3, 1], [5, 1], [7, 1], [2, 2], [4, 2], [6, 2], [8, 2], [1, 3], [3, 3], [5, 3], [7, 3]],
-     :red => [[2, 6], [4, 6], [6, 6], [8, 6], [1, 7], [3, 7], [5, 7], [7, 7], [2, 8], [4, 8], [6, 8], [8, 8]]}.each do |key, value|
-      it "#{key} team has all 12 pieces in the correct start positions" do
-        value.all? do |position|
-          @game.teams[key].has_value? position
-        end.should eq true
-      end
-    end
-  end
-
-
   describe "move" do
     before(:each) do
       @game = Game.new
