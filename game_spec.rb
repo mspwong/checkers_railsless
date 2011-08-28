@@ -43,41 +43,31 @@ describe "Game" do
     before(:each) do
       @game = Game.new
       @piece = {:team => :white, :piece_num => 12}
+      piece = @game.teams[@piece[:team]][@piece[:piece_num]]
+      @x = piece.first
+      @y = piece.last
     end
 
     describe "to invalid square" do
       it "results in exception" do
-        piece = @game.teams[@piece[:team]][@piece[:piece_num]]
-        x = piece.first
-        y = piece.last
-        lambda { @game.move(@piece, {:x=>3.5, :y=>y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>3.5, :y=>@y}) }.should raise_error(ArgumentError)
         lambda { @game.move(@piece, {:x=>3.5, :y=>3.5}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>x, :y=>-1}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>-1, :y=>y}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>0, :y=>y}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>x, :y=>0}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>"does not matter", :y=>y}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>x, :y=>9}) }.should raise_error(ArgumentError)
-        lambda { @game.move(@piece, {:x=>9, :y=>y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>@x, :y=>-1}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>-1, :y=>@y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>0, :y=>@y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>@x, :y=>0}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>"does not matter", :y=>@y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>@x, :y=>9}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>9, :y=>@y}) }.should raise_error(ArgumentError)
         lambda { @game.move(@piece, {:x=>9, :y=>9}) }.should raise_error(ArgumentError)
       end
     end
 
-    #describe "moving to light colored square" do
-    #  it "does not validate and does not move piece" do
-  #      x = @piece.x
-  #      y = @piece.y
-  #      assert_raise(ActiveRecord::RecordInvalid) { @piece.move(4, 4) }
-  #      @piece.reload
-  #      assert_equal x, @piece.x
-  #      assert_equal y, @piece.y
-  #
-  #      assert_equal 1, @piece.errors.size
-  #      assert_equal "base", @piece.errors.first[0]
-  #      assert_equal "must only move immediate forward and diagonal", @piece.errors.first[1]
-  #      true.should == false
-  #    end
-  #  end
+    describe "to light colored square" do
+      it "results in exception" do
+        lambda { @game.move(@piece, {:x=>4, :y=>4}) }.should raise_error(RuntimeError)
+      end
+    end
   #
   #  describe "moving to horizontally adjacent (side way) square" do
   #    it "does not validate" do

@@ -16,10 +16,29 @@ class Game
     raise ArgumentError unless ( new_position.size == 2  &&
                                 (new_position[:x].is_a? Integer)  && (VALID_COORDINATES.include? new_position[:x])  &&
                                 (new_position[:y].is_a? Integer)  && (VALID_COORDINATES.include? new_position[:y]) )
+    raise RuntimeError unless immediate_forward_and_diagonal(piece, new_position)
   end
 
   private
 
   VALID_COORDINATES = (1..8)
+
+  def position(piece)
+    teams[piece[:team]][piece[:piece_num]]
+  end
+
+  def immediate_forward_and_diagonal(piece, new_position)
+    p = position(piece)
+    x = p.first
+    y = p.last
+    if piece[:team] == :white
+      (new_position[:y] == y+1)  &&  ((new_position[:x] == x+1)  || (new_position[:x] == x-1))
+    elsif piece[:team] == :red
+      (new_position[:y] == y-1)  &&  ((new_position[:x] == x+1)  || (new_position[:x] == x-1))
+    else
+      raise RuntimeError("unknown team:  #{piece[:team]}")
+    end
+
+  end
 
 end
