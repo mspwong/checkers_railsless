@@ -29,7 +29,9 @@ describe "Game" do
     it "has all 24 pieces in the correct start positions" do
       @game.teams["white"].flatten.all? do |piece|
         if piece.class == Hash
-          piece == {:x => 1, :y => 2}
+          [[1,1],[3,1],[5,1],[7,1],[2,2],[4,2],[6,2],[8,2],[1,3],[3,3],[5,3],[7,3]].any? do |coordinates|
+            piece == {:x => coordinates.first, :y => coordinates.last}
+          end
         else
           true
         end
