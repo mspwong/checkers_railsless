@@ -1,7 +1,7 @@
 require "rspec"
 require File.dirname("__FILE__") + "/game"
 
-describe "Game:  " do
+describe "Checker game:  " do
 
   describe "move" do
     before(:each) do
