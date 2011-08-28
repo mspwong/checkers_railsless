@@ -46,26 +46,20 @@ describe "Game" do
     end
 
     describe "to invalid square" do
-      it "does not get far and does not move piece" do
+      it "results in exception" do
         piece = @game.teams[@piece[:team]][@piece[:piece_num]]
         x = piece.first
         y = piece.last
         lambda { @game.move(@piece, {:x=>3.5, :y=>y}) }.should raise_error(ArgumentError)
-        #new_positions = @game.position(@piece)
-        #new_positions[:x].should eq x
-        #new_positions[:y].should eq y
-
-        #assert_raise(ArgumentError) { @piece.move(3.5, @piece.y) }
-        #assert_raise(ArgumentError) { @piece.move(3.5, 3.5) }
-        #assert_raise(ArgumentError) { @piece.move(@piece.x, -1) }
-        #assert_raise(ArgumentError) { @piece.move(-1, @piece.y) }
-        #assert_raise(ArgumentError) { @piece.move(0, 1) }
-        #assert_raise(ArgumentError) { @piece.move("does_not_matter", 1) }
-        #assert_raise(ArgumentError) { @piece.move(@piece.x, 9) }
-        #assert_raise(ArgumentError) { @piece.move(@piece.x, 0) }
-        #assert_raise(ArgumentError) { @piece.move(9, @piece.y) }
-        #assert_raise(ArgumentError) { @piece.move(0, @piece.y) }
-        #assert_raise(ArgumentError) { @piece.move(9, 9) }
+        lambda { @game.move(@piece, {:x=>3.5, :y=>3.5}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>x, :y=>-1}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>-1, :y=>y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>0, :y=>y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>x, :y=>0}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>"does not matter", :y=>y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>x, :y=>9}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>9, :y=>y}) }.should raise_error(ArgumentError)
+        lambda { @game.move(@piece, {:x=>9, :y=>9}) }.should raise_error(ArgumentError)
       end
     end
 
