@@ -108,10 +108,9 @@ describe "Checker game:  " do
         piece = {:team => :red, :piece_num => 4}
         position = @game.position(piece)
         x, y = position.first, position.last
-        expect { @game.move(piece, [x-1, y-1]) }.to change { position = @game.position(piece) }
+        expect { @game.move(piece, [x-1, y-1]) }.to change { position = @game.position(piece) }.to([7,5]).from([8,6])
         x, y = position.first, position.last
-        expect { @game.move(piece, [x-1, y-1]) }.to change { position = @game.position(piece) }
-        position.should eq [6, 4]
+        expect { @game.move(piece, [x-1, y-1]) }.to change { @game.position(piece) }.from([7,5]).to([6,4])
       end
     end
 
@@ -120,10 +119,9 @@ describe "Checker game:  " do
         piece = {:team => :white, :piece_num => 12}
         position = @game.position(piece)
         x, y = position.first, position.last
-        expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }
+        expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }.from([7,3]).to([6,4])
         x, y = position.first, position.last
-        expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }
-        position.should eq [5, 5]
+        expect { @game.move(piece, [x-1, y+1]) }.to change { @game.position(piece) }.from([6,4]).to([5,5])
       end
     end
   end
@@ -143,11 +141,9 @@ describe "Checker game:  " do
       piece = {:team => :red, :piece_num => 4}
       position = @game.position(piece)
       x, y = position.first, position.last
-      @game.move(piece, [x-1, y-1])
-      position = @game.position(piece)
+      expect { @game.move(piece, [x-1, y-1]) }.to change { position = @game.position(piece) }.from([8,6]).to([7,5])
       x, y = position.first, position.last
-      expect { @game.move(piece, [x+1, y-1]) }.to change { position = @game.position(piece) }
-      position.should eq [8, 4]
+      expect { @game.move(piece, [x+1, y-1]) }.to change { @game.position(piece) }.from([7,5]).to([8,4])
 
       piece = {:team => :white, :piece_num => 12}
       position = @game.position(piece)
@@ -157,16 +153,14 @@ describe "Checker game:  " do
       piece = {:team => :red, :piece_num => 8}
       position = @game.position(piece)
       x, y = position.first, position.last
-      expect { @game.move(piece, [x+1, y-1]) }.to change { position = @game.position(piece) }
-      position.should eq [8, 6]
+      expect { @game.move(piece, [x+1, y-1]) }.to change { @game.position(piece) }.from([7,7]).to([8,6])
 
       piece = {:team => :white, :piece_num => 12}
       position = @game.position(piece)
       x, y = position.first, position.last
-      expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }
+      expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }.from([7,3]).to([6,4])
       x, y = position.first, position.last
-      expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }
-      position.should eq [5, 5]
+      expect { @game.move(piece, [x-1, y+1]) }.to change { @game.position(piece) }.from([6,4]).to([5,5])
 
       piece = {:team => :red, :piece_num => 2}
       position = @game.position(piece)
@@ -176,11 +170,10 @@ describe "Checker game:  " do
       piece = {:team => :white, :piece_num => 8}
       position = @game.position(piece)
       x, y = position.first, position.last
-      expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }
+      expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }.from([8,2]).to([7,3])
       x, y = position.first, position.last
-      expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }
+      expect { @game.move(piece, [x-1, y+1]) }.to change { position = @game.position(piece) }.from([7,3]).to([6,4])
       x, y = position.first, position.last
-      [x, y].should eq [6, 4]
       lambda { @game.move(piece, [x-1, y+1]) }.should raise_error ValidationError
 
       #   keep playing
